@@ -1,0 +1,3 @@
+tc_platform:
+    resource: "@TCPlatformBundle/Resources/config/routing.yml"
+    prefix:   /platform
