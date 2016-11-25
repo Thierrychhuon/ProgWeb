@@ -44,6 +44,10 @@ class AdvertController extends Controller
    ));
  }
 
+ public function index2Action(){
+   return $this->render('TCPlatformBundle:Advert:test.html.twig');
+ }
+ 
  public function viewAction($id)
  {
    $advert = array(

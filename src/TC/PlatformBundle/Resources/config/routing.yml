@@ -40,3 +40,8 @@ tc_platform_delete:
         _controller: TCPlatformBundle:Advert:delete
     requirements:
         id: \d+
+
+tc_platform_home2:
+    path:      /test
+    defaults:
+        _controller: TCPlatformBundle:Advert:index2
