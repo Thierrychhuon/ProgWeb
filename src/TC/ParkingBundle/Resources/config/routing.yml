@@ -1,0 +1,19 @@
+tc_parking_home:
+    path:     /
+    defaults: { _controller: TCParkingBundle:Parking:index }
+
+tc_parking_listing:
+    path:     /listing
+    defaults: { _controller: TCParkingBundle:Parking:listing }
+
+tc_parking_add:
+    path:     /add
+    defaults: { _controller: TCParkingBundle:Parking:add }
+
+tc_parking_aboutus:
+    path:     /aboutus
+    defaults: { _controller: TCParkingBundle:Parking:aboutus }
+
+tc_parking_contact:
+    path:     /contact
+    defaults: { _controller: TCParkingBundle:Parking:contact }

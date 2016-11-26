@@ -1,0 +1,4 @@
+services:
+#    tc_parking.example:
+#        class: TC\ParkingBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]

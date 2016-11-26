@@ -17,6 +17,7 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new TC\PlatformBundle\TCPlatformBundle(),
             new Symfony\Bundle\AsseticBundle\AsseticBundle(),
+            new TC\ParkingBundle\TCParkingBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {
