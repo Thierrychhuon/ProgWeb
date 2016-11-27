@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Advert
  *
- * @ORM\Table(name="advert")
+ * @ORM\Table(name="tc_platform_advert")
  * @ORM\Entity(repositoryClass="TC\PlatformBundle\Repository\AdvertRepository")
  */
 class Advert
@@ -49,7 +49,23 @@ class Advert
      */
     private $content;
 
+    /**
+     * @ORM\Column(name="published", type="boolean")
+     */
+    private $published = true;
 
+    /**
+     * @ORM\OneToOne(targetEntity="TC\PlatformBundle\Entity\Image", cascade={"persist"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $image;
+
+
+    public function __construct()
+    {
+    // Par défaut, la date de l'annonce est la date d'aujourd'hui
+    $this->date = new \Datetime();
+    }
     /**
      * Get id
      *
@@ -154,5 +170,53 @@ class Advert
     public function getContent()
     {
         return $this->content;
+    }
+
+    /**
+     * Set published
+     *
+     * @param boolean $published
+     *
+     * @return Advert
+     */
+    public function setPublished($published)
+    {
+        $this->published = $published;
+
+        return $this;
+    }
+
+    /**
+     * Get published
+     *
+     * @return boolean
+     */
+    public function getPublished()
+    {
+        return $this->published;
+    }
+
+    /**
+     * Set image
+     *
+     * @param \TC\PlatformBundle\Entity\Image $image
+     *
+     * @return Advert
+     */
+    public function setImage(\TC\PlatformBundle\Entity\Image $image = null)
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    /**
+     * Get image
+     *
+     * @return \TC\PlatformBundle\Entity\Image
+     */
+    public function getImage()
+    {
+        return $this->image;
     }
 }

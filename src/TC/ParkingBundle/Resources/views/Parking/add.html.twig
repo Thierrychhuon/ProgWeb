@@ -1,0 +1,20 @@
+{# src/OC/PlatformBundle/Resources/views/Advert/add.html.twig #}
+
+{% extends "TCParkingBundle::layout.html.twig" %}
+
+{% block tcparking_body %}
+
+  <h2>Ajouter un parking</h2>
+
+  <h3>Formulaire d'annonce</h3>
+
+    <div class="well">
+      {{ form(form) }}
+    </div>
+
+  <p>
+    Attention : cette annonce sera ajoutée directement
+    sur la page d'accueil après validation du formulaire.
+  </p>
+
+{% endblock %}

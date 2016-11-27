@@ -17,3 +17,7 @@ tc_parking_aboutus:
 tc_parking_contact:
     path:     /contact
     defaults: { _controller: TCParkingBundle:Parking:contact }
+
+tc_parking_test:
+    path:     /test
+    defaults: { _controller: TCParkingBundle:Parking:test }
