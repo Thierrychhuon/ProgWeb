@@ -31,7 +31,7 @@ class Parking
     /**
      * @var int
      *
-     * @ORM\Column(name="postcode", type="smallint")
+     * @ORM\Column(name="postcode", type="integer")
      */
     private $postcode;
 

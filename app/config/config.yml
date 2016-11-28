@@ -69,5 +69,23 @@ swiftmailer:
 
 # Assetic Configuration
 assetic:
-  debug:          '%kernel.debug%'
-  use_controller: '%kernel.debug%'
+    debug:          "%kernel.debug%"
+    use_controller: '%kernel.debug%'
+    bundles:        ['TCParkingBundle']
+    #java: /usr/bin/java
+    assets:
+      font-awesome-otf:
+        inputs: '%kernel.root_dir%/Resources/public/fonts/FontAwesome.otf'
+        output: 'fonts/FontAwesome.otf'
+      font-awesome-eot:
+        inputs: '%kernel.root_dir%/Resources/public/fonts/fontawesome-webfont.eot'
+        output: 'fonts/fontawesome-webfont.eot'
+      font-awesome-svg:
+        inputs: '%kernel.root_dir%/Resources/public/fonts/fontawesome-webfont.svg'
+        output: 'fonts/fontawesome-webfont.svg'
+      font-awesome-ttf:
+        inputs: '%kernel.root_dir%/Resources/public/fonts/fontawesome-webfont.ttf'
+        output: 'fonts/fontawesome-webfont.ttf'
+      font-awesome-woff:
+        inputs: '%kernel.root_dir%/Resources/public/fonts/fontawesome-webfont.woff'
+        output: 'fonts/fontawesome-webfont.woff'

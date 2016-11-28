@@ -1,0 +1,83 @@
+{# src/OC/PlatformBundle/Resources/views/Advert/add.html.twig #}
+
+{% extends "TCParkingBundle::layout.html.twig" %}
+
+{% block tcparking_body %}
+
+              <section class="container">
+                  <div class="row">
+                      <!--Item Detail Content-->
+                      <div class="col-md-9">
+                          <section class="block" id="main-content">
+
+                              <div class="row">
+
+                                  <!--Content-->
+                                  <div class="col-md-8 col-sm-8">
+                                      <section>
+                                          <article class="item-gallery">
+                                              <div class="owl-carousel item-slider">
+                                                  <div class="slide"><img src="{{ asset('images/1.jpg') }}"</div>
+                                              </div>
+                                          </article>
+                                          <!-- /.item-gallery -->
+                                          <article class="block">
+                                              <header><h2>Description</h2></header>
+                                              <p>
+                                                  {{parking.description}}
+                                              </p>
+                                          </article>
+                                        <!-- /.block -->
+                                      </section>
+                                      <!--Reviews-->
+                                  </div>
+                                  <!-- /.col-md-8-->
+                                  <!--Detail Sidebar-->
+                                  <aside class="col-md-4 col-sm-4" id="detail-sidebar">
+                                      <!--Contact-->
+                                      <section style="background-color: #717171">
+                                          <header><h3>Address</h3></header>
+                                            <div>{{parking.adresse}}</div>
+                                            <div>{{parking.postcode}}</div>
+                                            <hr>
+                                            <h3>Contact</h3>
+                                            {% if parking.telephone is not null %}
+                                            <figure>
+                                                  <div class="info">
+                                            <!--      <i class="fa fa-phone"></i> -->
+                                                      <span>Phone number: {{parking.telephone}}</span>
+                                                  </div>
+                                            </figure>
+                                            {% endif %}
+                                      </section>
+                                      <!--end Contact-->
+                                      <!--Rating-->
+                                      <section class="clearfix">
+                                          <header class="pull-left"><a href="#reviews" class="roll"><h3>Rating</h3></a></header>
+                                          <figure class="rating big pull-right" data-rating="4"></figure>
+                                      </section>
+                                      <!--end Rating-->
+
+                                  </aside>
+                                  <!--end Detail Sidebar-->
+                              </div>
+                              <!-- /.row -->
+                          </section>
+                          <!-- /#main-content-->
+                      </div>
+                      <!-- /.col-md-8-->
+                      <!--Sidebar-->
+
+                      <!-- /.col-md-3-->
+                      <!--end Sidebar-->
+                  </div><!-- /.row-->
+              </section>
+
+
+
+
+
+
+
+
+{% endblock %}

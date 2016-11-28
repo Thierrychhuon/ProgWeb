@@ -1,6 +1,6 @@
 tc_parking:
     resource: "@TCParkingBundle/Resources/config/routing.yml"
-    prefix:   /parking
+    prefix:   /parkingplat
 
 tc_platform:
     resource: "@TCPlatformBundle/Resources/config/routing.yml"
