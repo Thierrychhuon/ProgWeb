@@ -10,11 +10,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use TC\ParkingBundle\Entity\Parking;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
-use Symfony\Component\Form\Extension\Core\Type\FormType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use TC\ParkingBundle\Form\ParkingEditType;
+use TC\ParkingBundle\Form\ParkingType;
 
 class ParkingController extends Controller
 {
@@ -22,49 +19,32 @@ class ParkingController extends Controller
     {
         return $this->render('TCParkingBundle:Parking:index.html.twig');
     }
+
     public function listingAction()
     {
-        return $this->render('::layoutparking.html.twig');
+      $listParkings = $this->getDoctrine()
+      ->getManager()
+      ->getRepository('TCParkingBundle:Parking')
+      ->findAll()
+    ;
+
+    // L'appel de la vue ne change pas
+    return $this->render('TCParkingBundle:Parking:listing.html.twig', array(
+      'listParkings' => $listParkings,
+    ));
     }
 
     public function addAction(Request $request)
     {
-
-      // On crée un objet Advert
       $parking = new Parking();
-
-      // J'ai raccourci cette partie, car c'est plus rapide à écrire !
-      $form = $this->get('form.factory')->createBuilder(FormType::class, $parking)
-        ->add('adresse',     TextType::class)
-        ->add('postcode',    NumberType::class)
-        ->add('telephone', NumberType::class)
-        ->add('description',   TextareaType::class)
-        ->add('save',      SubmitType::class)
-        ->getForm()
-      ;
-        // Si la requête est en POST
-      if ($request->isMethod('POST')) {
-        // On fait le lien Requête <-> Formulaire
-        // À partir de maintenant, la variable $advert contient les valeurs entrées dans le formulaire par le visiteur
-        $form->handleRequest($request);
-
-        // On vérifie que les valeurs entrées sont correctes
-        // (Nous verrons la validation des objets en détail dans le prochain chapitre)
-        if ($form->isValid()) {
-          // On enregistre notre objet $advert dans la base de données, par exemple
-          $em = $this->getDoctrine()->getManager();
-          $em->persist($parking);
-          $em->flush();
-
-          $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');
-
-          // On redirige vers la page de visualisation de l'annonce nouvellement créée
-          return $this->redirectToRoute('tc_parking_home', array('id' => $parking->getId()));
-        }
+      $form = $this->get('form.factory')->create(ParkingType::class, $parking);
+      if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()){
+      $em = $this->getDoctrine()->getManager();
+      $em->persist($parking);
+      $em->flush();
+      $request->getSession()->getFlashBag()->add('notice', 'Parking bien enregistré.');
+      return $this->redirectToRoute('tc_parking_view', array('id' => $parking->getId()));
       }
-      // À ce stade, le formulaire n'est pas valide car :
-      // - Soit la requête est de type GET, donc le visiteur vient d'arriver sur la page et veut voir le formulaire
-      // - Soit la requête est de type POST, mais le formulaire contient des valeurs invalides, donc on l'affiche de nouveau
       return $this->render('TCParkingBundle:Parking:add.html.twig', array(
         'form' => $form->createView(),
       ));
@@ -83,24 +63,56 @@ class ParkingController extends Controller
         return $this->render('::layoutparking2.html.twig');
     }
     public function viewAction($id)
-  {
-    $em = $this->getDoctrine()->getManager();
-    // Pour récupérer une seule annonce, on utilise la méthode find($id)
-    $parking = $em->getRepository('TCParkingBundle:Parking')->find($id);
-    // $advert est donc une instance de OC\PlatformBundle\Entity\Advert
-    // ou null si l'id $id n'existe pas, d'où ce if :
-    if (null === $parking) {
-      throw new NotFoundHttpException("L'annonce d'id ".$id." n'existe pas.");
+    {
+      $em = $this->getDoctrine()->getManager();
+      $parking = $em->getRepository('TCParkingBundle:Parking')->find($id);
+      if (null === $parking) {
+        throw new NotFoundHttpException("L'annonce d'id ".$id." n'existe pas.");
+      }
+      return $this->render('TCParkingBundle:Parking:view.html.twig', array(
+        'parking'           => $parking,
+      ));
     }
-    // Récupération de la liste des candidatures de l'annonce
-    //$listApplications = $em
-    //  ->getRepository('OCPlatformBundle:Application')
-    //  ->findBy(array('advert' => $advert))
-    //;
 
-    return $this->render('TCParkingBundle:Parking:view.html.twig', array(
-      'parking'           => $parking,
-    ));
-  }
+    public function deleteAction(Request $request, $id)
+    {
+      $em = $this->getDoctrine()->getManager();
+      $parking = $em->getRepository('TCParkingBundle:Parking')->find($id);
+      if (null === $parking) {
+        throw new NotFoundHttpException("Le parking d'id ".$id." n'existe pas.");
+      }
+      // On crée un formulaire vide, qui ne contiendra que le champ CSRF
+      // Cela permet de protéger la suppression d'annonce contre cette faille
+      $form = $this->get('form.factory')->create();
+      if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
+        $em->remove($parking);
+        $em->flush();
+        $request->getSession()->getFlashBag()->add('info', "Le parking a bien été supprimé.");
+        return $this->redirectToRoute('tc_parking_home');
+      }
+        return $this->render('TCParkingBundle:Parking:delete.html.twig', array(
+         'parking' => $parking,
+         'form'   => $form->createView(),
+       ));
+     }
 
+    public function editAction($id, Request $request)
+    {
+      $em = $this->getDoctrine()->getManager();
+      $parking = $em->getRepository('TCParkingBundle:Parking')->find($id);
+      if (null === $parking) {
+        throw new NotFoundHttpException("Le parking d'id ".$id." n'existe pas.");
+      }
+      $form = $this->get('form.factory')->create(ParkingEditType::class, $parking);
+      if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
+        // Inutile de persister ici, Doctrine connait déjà notre annonce
+        $em->flush();
+        $request->getSession()->getFlashBag()->add('notice', 'Parking bien modifié.');
+        return $this->redirectToRoute('tc_parking_view', array('id' => $parking->getId()));
+      }
+      return $this->render('TCParkingBundle:Parking:edit.html.twig', array(
+        'parking' => $parking,
+        'form'   => $form->createView(),
+      ));
+    }
 }

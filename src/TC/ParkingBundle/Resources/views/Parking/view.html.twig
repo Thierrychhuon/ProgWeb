@@ -1,5 +1,3 @@
-{# src/OC/PlatformBundle/Resources/views/Advert/add.html.twig #}
-
 {% extends "TCParkingBundle::layout.html.twig" %}
 
 {% block tcparking_body %}
@@ -17,7 +15,11 @@
                                       <section>
                                           <article class="item-gallery">
                                               <div class="owl-carousel item-slider">
+                                                {% if parking.image is not null %}
+                                                  <div class="slide"><img src="{{ parking.image.url }}"</div>
+                                                {% else %}
                                                   <div class="slide"><img src="{{ asset('images/1.jpg') }}"</div>
+                                                {% endif %}
                                               </div>
                                           </article>
                                           <!-- /.item-gallery -->
@@ -35,7 +37,7 @@
                                   <!--Detail Sidebar-->
                                   <aside class="col-md-4 col-sm-4" id="detail-sidebar">
                                       <!--Contact-->
-                                      <section style="background-color: #717171">
+                                      <section style="background-color: #f4f4f2; padding: 10px">
                                           <header><h3>Address</h3></header>
                                             <div>{{parking.adresse}}</div>
                                             <div>{{parking.postcode}}</div>
@@ -49,14 +51,13 @@
                                                   </div>
                                             </figure>
                                             {% endif %}
+                                            <hr>
+                                            <div><a href="{{ path('tc_parking_edit', {'id': parking.id}) }}"><font color="#00763c">Modifier ce parking</font></a></div>
+                                            <div><a href="{{ path('tc_parking_delete', {'id': parking.id}) }}"><font color="#bf0000">Supprimer ce parking</font></a></font></div>
+                                            <hr>
+                                            <div><font color="#0000b3">Ajouter un commentaire</font></div>
                                       </section>
                                       <!--end Contact-->
-                                      <!--Rating-->
-                                      <section class="clearfix">
-                                          <header class="pull-left"><a href="#reviews" class="roll"><h3>Rating</h3></a></header>
-                                          <figure class="rating big pull-right" data-rating="4"></figure>
-                                      </section>
-                                      <!--end Rating-->
 
                                   </aside>
                                   <!--end Detail Sidebar-->
@@ -72,12 +73,5 @@
                       <!--end Sidebar-->
                   </div><!-- /.row-->
               </section>
-
-
-
-
-
-
-
 
 {% endblock %}

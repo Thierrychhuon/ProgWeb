@@ -49,7 +49,13 @@ class Parking
      */
     private $description;
 
+    /**
+    * @ORM\OneToOne(targetEntity="TC\ParkingBundle\Entity\Image", cascade={"persist"})
+    * @ORM\JoinColumn(nullable=true)
+    */
+    private $image;
 
+    
     /**
      * Get id
      *
@@ -155,4 +161,31 @@ class Parking
     {
         return $this->description;
     }
+
+
+
+    /**
+     * Set image
+     *
+     * @param \TC\ParkingBundle\Entity\Image $image
+     *
+     * @return Parking
+     */
+    public function setImage(\TC\ParkingBundle\Entity\Image $image = null)
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    /**
+     * Get image
+     *
+     * @return \TC\ParkingBundle\Entity\Image
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
+
 }

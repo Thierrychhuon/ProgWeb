@@ -28,21 +28,8 @@ class Image
      */
     private $url;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="alt", type="string", length=255)
-     */
-    private $alt;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="TC\ParkingBundle\Entity\Parking")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $parking;
 
 
-    
     /**
      * Get id
      *
